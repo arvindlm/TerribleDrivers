@@ -2,6 +2,7 @@ package com.authorwjf;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,14 +11,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.*;
+import java.util.*;
 
 public class Main extends Activity implements SensorEventListener {
-	
+	public static List<Float> listX=new ArrayList<Float>();
+	public static List<Float> listY=new ArrayList<Float>();
+	public static List<Float> listZ=new ArrayList<Float>();
 	private float mLastX, mLastY, mLastZ;
 	private boolean mInitialized;
 	private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private final float NOISE = (float) 2.0;
+    Button button;
 	 
     /** Called when the activity is first created. */
     @Override
@@ -44,6 +50,16 @@ public class Main extends Activity implements SensorEventListener {
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// can be safely ignored for this demo
 	}
+	
+	public void callScore(View view){
+	 	Bundle b = new Bundle();
+        b.putString("message","your message");
+        Intent i = new Intent(this,Score.class);
+        i.putExtras(b);
+        startActivity(i);
+ }
+
+	
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
@@ -72,6 +88,9 @@ public class Main extends Activity implements SensorEventListener {
 			mLastX = x;
 			mLastY = y;
 			mLastZ = z;
+			listX.add(deltaX);
+			listY.add(deltaY);
+			listZ.add(deltaZ);
 			tvX.setText(Float.toString(deltaX));
 			tvY.setText(Float.toString(deltaY));
 			tvZ.setText(Float.toString(deltaZ));
